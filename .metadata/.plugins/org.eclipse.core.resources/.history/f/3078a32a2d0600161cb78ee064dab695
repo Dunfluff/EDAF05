@@ -1,0 +1,21 @@
+package spanning_USA;
+
+public class City implements Comparable{
+	public String parent;
+	public String name;
+	public Integer distance;
+	public City(String name, String parent, int distance) {
+		this.name = name;
+		this.distance = distance;
+		this.parent = parent;
+	}
+	@Override
+	public int compareTo(Object arg0) {
+		return distance.compareTo((Integer) arg0);
+	}
+
+	@Override
+	public String toString() {
+		return parent + "-" + distance + "-" + name;
+	}
+}

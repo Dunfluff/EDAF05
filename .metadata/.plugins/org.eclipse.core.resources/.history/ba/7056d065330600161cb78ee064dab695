@@ -1,0 +1,104 @@
+package spanning_USA;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Spanning_USA {
+	static HashMap<String, LinkedList<City>> cities = new HashMap<String, LinkedList<City>>();
+	
+	
+	
+	public static void readFile(String filename) {
+		File file = new File(filename);
+		Scanner scan = null;
+		try {
+			scan = new Scanner(file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		while (scan.hasNext()) {
+			String line = scan.nextLine();
+			if(!line.contains("[")){
+				cities.put(line.trim(), new LinkedList<City>());
+			}else{
+				String[] newLines = line.split("--| \\[");
+				String firstCity = newLines[0];
+				String secondCity = newLines[1];
+				int distance = Integer.parseInt(newLines[2].substring(1, newLines[2].length()-1));
+				System.out.println(distance);
+				cities.get(firstCity).add(new City(firstCity,secondCity, distance));
+				cities.get(secondCity).add(new City(secondCity,firstCity, distance));
+			}
+		}
+		scan.close();
+	}
+	
+	public static void read(String filename) {
+		File f = new File(filename);
+		Scanner scan = null;
+		try {
+			scan = new Scanner(f);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		boolean readingDistances = false;
+		while (scan.hasNext()) {
+			String line = scan.nextLine();
+			if (!readingDistances && line.contains("--")) {
+				readingDistances = true;
+			}
+			if(!readingDistances) {
+				cities.put(line.trim(), new LinkedList<City>());
+			}
+			if (readingDistances) {
+				String[] citySplit = line.split("--");
+				citySplit[0] = citySplit[0].trim();
+				String[] distanceSplit = citySplit[1].split("\\[");
+				distanceSplit[1] = distanceSplit[1].substring(0,
+						distanceSplit[1].length() - 1); // - ]
+				cities.get(citySplit[0]).add(new City(citySplit[0], distanceSplit[0].trim(), Integer
+								.parseInt(distanceSplit[1])));
+				cities.get(distanceSplit[0].trim()).add(
+						new City(distanceSplit[0].trim(), citySplit[0], Integer
+								.parseInt(distanceSplit[1])));
+			} 
+		}
+		scan.close();
+	}
+	
+	public static int prim() {
+		int totalDistance = 0;
+		HashSet<String> visited = new HashSet<String>();
+		String initialCity = cities.keySet().iterator().next();
+		visited.add(initialCity);
+		PriorityQueue<City> pcity = new PriorityQueue<City>();
+		pcity.addAll(cities.get(initialCity));
+		int nbrCities = 0;
+		while (!pcity.isEmpty()) {
+			City e = pcity.remove();
+			if (!visited.contains(e.target)) {
+				totalDistance += e.distance;
+				System.out.println(e.toString());
+				visited.add(e.target);
+				pcity.addAll(cities.get(e.target));
+			}
+		}
+		return totalDistance;
+	}
+	
+	public static void main(String[] args) {
+
+		read("USA-highway-miles.txt");
+		long start = System.currentTimeMillis();
+		System.out.println(prim());
+//		System.out.println(System.currentTimeMillis() - start);
+	}
+}
+
+

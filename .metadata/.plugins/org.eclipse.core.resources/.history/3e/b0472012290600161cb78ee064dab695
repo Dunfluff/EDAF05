@@ -1,0 +1,64 @@
+package spanning_USA;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Spanning_USA {
+	HashMap<String, Queue> cities = new HashMap<String, Queue>();
+	
+	
+	
+	public void readFile(String filename) {
+		File file = new File(filename);
+		Scanner scan = null;
+		try {
+			scan = new Scanner(file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		while (scan.hasNext()) {
+			String line = scan.nextLine();
+			if(!line.contains("[")){
+				cities.put(line, new PriorityQueue());
+			}else{
+				String[] newLines = line.split("--| ");
+				cities.get(newLines[0]).add(new City(newLines[1], Integer.parseInt(newLines[3].substring(0, newLines[3].length()))));
+				cities.get(newLines[0]).add(new City(newLines[1], Integer.parseInt(newLines[3].substring(0, newLines[3].length()))));
+			}
+		}
+		scan.close();
+	}
+	
+	public void prim(){
+		
+	}
+	public class City implements Comparable{
+		private City parent;
+		private String name;
+		private Integer distance;
+		public City(String string, int parseInt) {
+			this.name = name;
+			this.distance = distance;
+			parent = null;
+		}
+		@Override
+		public int compareTo(Object arg0) {
+			return distance.compareTo((Integer) arg0);
+		}
+		public String getName(){
+			return name;
+		}
+		public void setParent(City p){
+			parent = p;
+		}
+		public City getParent(){
+			return parent;
+		}
+	}
+}
+
+

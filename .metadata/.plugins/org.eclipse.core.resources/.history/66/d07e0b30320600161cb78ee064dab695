@@ -1,0 +1,22 @@
+package spanning_USA;
+
+public class City implements Comparable<City>{
+	public String target;
+	public String source;
+	public int weight;
+	public City(String source, String target, int weight) {
+		this.weight = weight;
+		this.source = source;
+		this.target = target;
+	}
+	@Override
+	public int compareTo(City c) {
+		return weight - c.weight;
+	}
+	
+
+	@Override
+	public String toString() {
+		return source + "-" + target + "-" + weight;
+	}
+}

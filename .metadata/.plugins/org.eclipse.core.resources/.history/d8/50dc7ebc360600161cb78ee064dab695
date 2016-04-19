@@ -1,0 +1,72 @@
+package spanning_USA;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Spanning_USA {
+	static HashMap<String, LinkedList<City>> cities = new HashMap<String, LinkedList<City>>();
+
+	public static void readFile(String filename) {
+		File file = new File(filename);
+		Scanner scan = null;
+		try {
+			scan = new Scanner(file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		while (scan.hasNext()) {
+			String line = scan.nextLine();
+			if (!line.contains("--")) {
+				cities.put(line.trim(), new LinkedList<City>());
+				System.out.println("test");
+
+			} else {
+				String[] citySplit = line.split("--");
+				citySplit[0] = citySplit[0].trim();
+				String[] distanceSplit = citySplit[1].split("\\[");
+				distanceSplit[1] = distanceSplit[1].substring(0,
+						distanceSplit[1].length() - 1); // - ]
+				cities.get(citySplit[0]).add(new City(citySplit[0], distanceSplit[0].trim(), Integer
+								.parseInt(distanceSplit[1])));
+				cities.get(distanceSplit[0].trim()).add(
+						new City(distanceSplit[0].trim(), citySplit[0], Integer
+								.parseInt(distanceSplit[1])));
+			}
+		}
+		scan.close();
+	}
+
+	public static int prim() {
+		int totalDistance = 0;
+		HashSet<String> visited = new HashSet<String>();
+		String initialCity = cities.keySet().iterator().next();
+		visited.add(initialCity);
+		PriorityQueue<City> pcity = new PriorityQueue<City>();
+		pcity.addAll(cities.get(initialCity));
+		int nbrCities = 0;
+		while (!pcity.isEmpty()) {
+			City e = pcity.remove();
+			if (!visited.contains(e.target)) {
+				totalDistance += e.distance;
+				System.out.println(e.toString());
+				visited.add(e.target);
+				pcity.addAll(cities.get(e.target));
+			}
+		}
+		return totalDistance;
+	}
+
+	public static void main(String[] args) {
+
+		readFile("USA-highway-miles.txt");
+		long start = System.currentTimeMillis();
+		System.out.println(prim());
+		// System.out.println(System.currentTimeMillis() - start);
+	}
+}
