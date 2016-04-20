@@ -1,0 +1,30 @@
+\documentclass{tufte-handout}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo}
+\usepackage{booktabs}
+\usepackage{microtype}
+
+\pagestyle{empty}
+
+
+\title{Word Ladders Report}
+\author{Josefine Myllenberg \& Lars Korduner}
+
+\begin{document}
+\maketitle
+
+  \section{Results}
+
+  Our implementation produces the expected results on all input--output file pairs and passes all tests. The Adjacency list creation takes $O(n^2)$.  This could be reduced by using a better comparison algorithm.
+
+  \section{Implementation details}
+
+  We build the graph's edges by iterating over all words and then create an adjacency list by comparing all words with eachother. This takes $O(n^2)$ time.
+  
+  After that we read the in file and iterate through the words adjacency lists to find the distance between words.
+  
+  The total running time of our implemenation (including graph construction and traversal) is 3459 mili seconds or $O(n^2)$.
+
+
+\end{document}

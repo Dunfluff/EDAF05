@@ -1,20 +1,17 @@
-INDEX VERSION 1.127+C:\Users\Lars\Documents\GitHub\EDAF05\.metadata\.plugins\org.eclipse.jdt.core
-3724307573.index
-3814180264.index
-2442888519.index
-2979327570.index
-3465765727.index
-2563912980.index
-152244849.index
-4078855296.index
-817958513.index
-3887496914.index
-2153270132.index
-2449793579.index
-1760935762.index
-2334050384.index
-606802006.index
-1416821754.index
-1677593041.index
-1851955243.index
-48817752.index
+INDEX VERSION 1.127+/h/dk/u/dat12jmy/EDAF05-git/EDAF05/.metadata/.plugins/org.eclipse.jdt.core
+742522455.index
+939466299.index
+3885805113.index
+1913109094.index
+2233963263.index
+2630498905.index
+3214207201.index
+3888198363.index
+2066489604.index
+527624335.index
+120211678.index
+46282419.index
+3721837726.index
+2982035129.index
+2771403403.index
+2841451250.index

@@ -49,10 +49,10 @@ public class Spanning_USA {
 		int nbrCities = 0;
 		while (!pcity.isEmpty()) {
 			City e = pcity.remove();
-			if (!visited.contains(e.target)) {
+			if (visited.add(e.target)) {
 				totalDistance += e.distance;
 //				System.out.println(e.toString());
-				visited.add(e.target);
+				
 				pcity.addAll(cities.get(e.target));
 			}
 		}
@@ -61,7 +61,7 @@ public class Spanning_USA {
 
 	public static void main(String[] args) {
 
-		readFile("USA-highway-miles.txt");
+		readFile("tinyEWG-alpha.txt");
 		long start = System.currentTimeMillis();
 		System.out.println(prim());
 		System.out.println(System.currentTimeMillis() - start);
