@@ -1,0 +1,23 @@
+import java.awt.Point;
+
+public class CPoint extends Point implements Comparable<CPoint>{
+
+	public CPoint() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public CPoint(Point p) {
+		super(p);
+		// TODO Auto-generated constructor stub
+	}
+
+	public CPoint(int x, int y) {
+		super(x, y);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public int compareTo(CPoint p) {
+		return super.x - p.x;
+	}
+}

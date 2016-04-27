@@ -1,0 +1,24 @@
+package closestPoints;
+import java.awt.Point;
+
+public class Point extends Point implements Comparable<Point>{
+
+	public Point() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Point(Point p) {
+		super(p);
+		// TODO Auto-generated constructor stub
+	}
+
+	public Point(int x, int y) {
+		super(x, y);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public int compareTo(Point p) {
+		return super.x - p.x;
+	}
+}

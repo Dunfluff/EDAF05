@@ -1,0 +1,55 @@
+package closestPoints;
+
+import java.awt.Point;
+import java.util.Comparator;
+
+public class CPoint{
+
+	private double x;
+	private double y;
+
+	public CPoint(Double x, Double y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	public double getX(){
+		return x;
+	}
+	
+	public double getY(){
+		return y;
+	}
+
+	
+	public static Comparator<CPoint> getCompByX()
+	{   
+	 Comparator<CPoint> comp = new Comparator<CPoint>(){
+	     @Override
+	     public int compare(CPoint p, CPoint p2)
+	     {
+	         return Double.compare(p.getX(), p.getX());
+	     }        
+	 };
+	 return comp;
+	}  
+	
+	public static Comparator<CPoint> getCompByY()
+	{   
+	 Comparator<CPoint> comp = new Comparator<CPoint>(){
+	     @Override
+	     public int compare(CPoint p, CPoint p2)
+	     {
+	         return Double.compare(p.getY(), p2.getY());
+	     }        
+	 };
+	 return comp;
+	}
+	
+	public double getDist(CPoint p){
+		double x = Math.abs(this.x - p.getX());
+		double y = Math.abs(this.y - p.getY());
+		return Math.sqrt((x * x) + (y * y));
+	}
+
+}
