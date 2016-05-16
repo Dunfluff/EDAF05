@@ -1,0 +1,126 @@
+package closestPoints;
+
+import java.awt.geom.Point2D;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.PriorityQueue;
+import java.util.Scanner;
+
+public class ClosestPoint {
+	
+	private HashMap<String, CPoint> points;
+	private ArrayList<CPoint> XPoints;
+	private ArrayList<CPoint> YPoints;
+
+	public ClosestPoint() {
+		points = new HashMap<String, CPoint>();
+		XPoints = new ArrayList<CPoint>();
+		YPoints = new ArrayList<CPoint>();
+
+	}
+
+	public void readFile(String filename) throws IOException {
+		File file = new File(filename);
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		String row = br.readLine();
+		while (!row.equals("NODE_COORD_SECTION")) {
+			row = br.readLine();
+		}
+		row = br.readLine();
+		while (row != null && !row.equals("EOF")) {
+			String[] line = row.split(" ");
+			String name = line[0];
+			Double x = Double.parseDouble(line[1]);
+			Double y = Double.parseDouble(line[2]);
+			System.out.println(name + "	" + x + "	" + y);
+			points.put(name, new CPoint(x, y));
+			CPoint p = new CPoint(x, y);
+			XPoints.add(p);
+			YPoints.add(p);
+			row = br.readLine();
+		}
+		Collections.sort(XPoints, CPoint.getCompByX());
+		Collections.sort(YPoints, CPoint.getCompByY());
+		br.close();
+
+	}
+
+	public double solve() {
+		return recSolve(XPoints, YPoints);
+	}
+
+	private double recSolve(ArrayList<CPoint> x, ArrayList<CPoint> y) {
+		HashSet<CPoint> all = new HashSet<CPoint>();
+		all.addAll(x);
+		all.addAll(y);
+		
+		if (x.size() < 3) {
+			double deltaRoot = Double.MAX_VALUE;
+			for (CPoint s : all) {
+				for (CPoint t : all) {
+					double deltaX = s.getDist(t);
+					if (deltaX < deltaRoot && !s.equals(t))
+						deltaRoot = deltaX;
+				}
+			}
+			return deltaRoot;
+		}
+
+		int mid = x.size() / 2;
+		ArrayList<CPoint> Qx = new ArrayList<CPoint>();
+		ArrayList<CPoint> Qy = new ArrayList<CPoint>();
+		ArrayList<CPoint> Rx = new ArrayList<CPoint>();
+		ArrayList<CPoint> Ry = new ArrayList<CPoint>();
+		Qx.addAll(x.subList(0, mid));
+		Qy.addAll(y.subList(0, mid));
+		Rx.addAll(x.subList(mid, x.size()));
+		Ry.addAll(y.subList(mid, y.size()));
+		double deltaLeft = recSolve(Qx, Qy);
+		double deltaRight = recSolve(Rx, Ry);
+
+		double delta = Math.min(deltaLeft, deltaRight);
+		CPoint m = x.get(mid);
+		double L = m.getX();
+		ArrayList<CPoint> Sy = new ArrayList<CPoint>();
+		for (int i = 0; i < x.size(); i++) {
+			if (Math.abs(y.get(i).getX() - L) <= delta) {
+				Sy.add(y.get(i));
+			}
+		}
+
+		double deltaS = Double.MAX_VALUE;
+		for (CPoint s : Sy) {
+			int i = 0;
+			while (i < 15 && i < Sy.size()) {
+				double deltaSPrim = s.getDist(Sy.get(i));
+				if (deltaSPrim < deltaS && !s.equals(Sy.get(i))) {
+					deltaS = deltaSPrim;
+				}
+				i++;
+			}
+		}
+
+		if (deltaS < delta) {
+			return deltaS;
+		} else if (deltaLeft < deltaRight) {
+			return deltaLeft;
+		} else {
+			return deltaRight;
+		}
+
+	}
+
+	public static void main(String[] args) throws IOException {
+		ClosestPoint pair = new ClosestPoint();
+		//pair.readFile("data/close-pairs-4-in.txt");
+		pair.readFile("data/lin101-tsp.txt");
+		System.out.println("Result: " + pair.solve());
+	}
+}
